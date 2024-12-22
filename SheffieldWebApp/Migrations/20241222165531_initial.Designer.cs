@@ -12,8 +12,8 @@ using SheffieldWebApp.Data;
 namespace SheffieldWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222140056_migrations1")]
-    partial class migrations1
+    [Migration("20241222165531_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
