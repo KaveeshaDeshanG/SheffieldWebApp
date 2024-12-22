@@ -1,0 +1,113 @@
+﻿@model SheffieldWebApp.Models.AddMarksModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<AssignedStudent> allAssignedStudents = Model.AssignedStudents;
+    List<Student> students = Model.Students;
+    List<Mark> allMarks = Model.AllMarks;
+    Subject subject = Model.Subject;
+	List<AssignedStudent> assignedStudents = [];
+	foreach (var student in allAssignedStudents)
+	{
+		if (student.SubjectId == subject.Id)
+		{
+			assignedStudents.Add(student);
+		}
+	};
+}
+
+<h1>Create</h1>
+<h4>Marks</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Student Id</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Marks</th>
+                    <th scope="col">Grade</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in assignedStudents)
+                {
+                    Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
+                    Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == student.Id.ToString());
+
+                    if (studentMark != null)
+                    {
+                        <tr>
+                            <form asp-action="ChangeMarks" asp-controller="Marks">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <td>
+                                    @student.Id
+                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                <input type="hidden" asp-for="@Model.Marks.Id" value="@studentMark.Id" />
+                            </td>
+                            <td>@selectedStudent?.Name</td>
+                            <td>
+                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" value="@studentMark.MarksObtained" />
+                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                            </td>
+                            <td>@studentMark.GradeName</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                </div>
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <form asp-action="Create" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <td>
+                                    @student.Id
+                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                            </td>
+                            <td>@selectedStudent?.Name</td>
+                            <td>
+                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" />
+                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="submit" value="Add" class="btn btn-primary" />
+                                </div>
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+    </div>
+</div>
+
+@if (User.IsInRole("Teacher"))
+{
+    <a asp-controller="TeachersDashboard" class="btn btn-secondary" asp-action="Index">Back to List</a>
+}
+else if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Admin" class="btn btn-secondary" asp-action="Index">Back to List</a>
+}
+else
+{
+    <a asp-controller="TeachersDashboard" class="btn btn-secondary" asp-action="Index">Back to List</a>
+
+}

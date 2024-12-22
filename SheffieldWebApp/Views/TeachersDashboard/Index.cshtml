@@ -1,0 +1,333 @@
+﻿@model SheffieldWebApp.Models.TeacherDashboard
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userId = UserManager.GetUserId(User);
+
+    Teacher selectedTeacher = Model.teachers.FirstOrDefault(t => t.Id == userId)!;
+
+    List<Student> allStudents = Model.students;
+    Subject teachersSubject = Model.subjects.FirstOrDefault(s => s.Title == selectedTeacher!.subject)!;
+    int subjectId = teachersSubject.Id;
+    List<AssignedStudent> subjectStudents = [];
+    foreach(var s in Model.assignedStudents){
+        if(s.SubjectId == teachersSubject.Id){
+            subjectStudents.Add(s);
+        }
+    }
+    List<Grade> grades = [];
+    foreach(var g in Model.grades){
+        if(g.SubjectName == teachersSubject.Title){
+            grades.Add(g);
+        }
+    }
+    List<Mark> allMarks = Model.marks.Where(m => m.SubjectId == subjectId).ToList();
+}
+
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="main-tab" data-bs-toggle="tab" data-bs-target="#main-tab-pane" type="button" role="tab" aria-controls="main-tab-pane" aria-selected="true">Dashboard</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="grade-tab" data-bs-toggle="tab" data-bs-target="#grade-tab-pane" type="button" role="tab" aria-controls="grade-tab-pane" aria-selected="true">Manage Grades</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="student-tab" data-bs-toggle="tab" data-bs-target="#student-tab-pane" type="button" role="tab" aria-controls="student-tab-pane" aria-selected="false">Assign Students</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects-tab-pane" type="button" role="tab" aria-controls="subjects-tab-pane" aria-selected="false">Manage Students</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="main-tab-pane" role="tabpanel" aria-labelledby="main-tab" tabindex="0">
+
+            <div class="card mt-4 mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h5>Subject Details</h5>
+                        </div>
+                        <div class="col-md-5">
+                            <a asp-controller="subjects" class="btn btn-warning" asp-action="Edit" asp-route-id="@teachersSubject.Id">Edit Subject</a>
+                            <a asp-controller="teachers" class="btn btn-info" asp-action="Details" asp-route-id="@selectedTeacher.Id">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (teachersSubject != null)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Subject ID:</strong> @teachersSubject.Id
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Subject:</strong> @teachersSubject.Title
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <strong>Teacher:</strong> @selectedTeacher.Name
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <strong>Description:</strong>
+                            </div>
+                            <div class="col-md-12">
+                                <p>@teachersSubject.Description</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No subject details available.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Search Students</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-outline mb-4">
+                        <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or registration ID">
+                    </div>
+                    <table class="table table-striped" id="students-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (subjectStudents != null && subjectStudents.Any())
+                            {
+                                @foreach (var student in subjectStudents)
+                                {
+                                    Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
+                                    string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                    decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.MarksObtained ?? 0;
+                                    <tr>
+                                        <td class="student-id">@selectedStudent.Id</td>
+                                        <td class="student-name">@selectedStudent.Name</td>
+                                        <td>@marksObtained</td>
+                                        <td>@gradeName</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5">No students available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+       
+        <div class="tab-pane fade" id="grade-tab-pane" role="tabpanel" aria-labelledby="grade-tab" tabindex="0">
+
+            <div class="container mt-4">
+                <div class="card mt-2">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h5>Mark grades</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <a asp-controller="grades" class="btn btn-success" asp-route-id="@subjectId" asp-action="Create">Create New</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Grade</th>
+                                    <th scope="col">Given Marks</th>
+                                    <th scope="col">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.grades != null && Model.grades.Any())
+                                {
+                                    @foreach (var grade in grades)
+                                    {
+                                        <tr>
+                                            <th scope="row">@grade.GradeName</th>
+                                            <th scope="row">@grade.GivenMarks</th>
+                                            <td>
+                                                <a asp-controller="grades" class="btn btn-primary" asp-action="Details" asp-route-id="@grade.Id">Details</a> 
+                                                <a asp-controller="grades" class="btn btn-warning" asp-action="Edit" asp-route-id="@grade.Id">Manage Grade</a> 
+                                                <a asp-controller="grades" class="btn btn-danger" asp-action="Delete" asp-route-id="@grade.Id">Remove Grade</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="1">No grades available.</td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="tab-pane fade" id="student-tab-pane" role="tabpanel" aria-labelledby="student-tab" tabindex="0">
+            <div class="container mt-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Add new students to subject</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Registration Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Assign Sutudent</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.students != null && Model.students.Any())
+                                {
+                                    @foreach (var student in Model.students)
+                                    {
+                                        <tr>
+                                            <td>@student.Id</td>
+                                            <td>@student.Name</td>
+                                            <td>@student.Email</td>
+                                            @if (subjectStudents != null)
+                                            {
+                                                @if (subjectStudents.FirstOrDefault(s => s.StudentId == student.RegistrationId) != null)
+                                                {
+                                                    <td><button class="btn btn-secondary">Assigned</button></td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td>
+                                                        <a asp-controller="TeachersDashboard"
+                                                           asp-action="AddStudentToSubject"
+                                                           asp-route-subjectId="@subjectId"
+                                                           asp-route-studentId="@student.RegistrationId"
+                                                           class="btn btn-success">Assign</a>
+                                                    </td>
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td><button class="btn btn-primary">Assign</button></td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">No students available.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="subjects-tab-pane" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">
+
+            <div class="container mt-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="row mt-2">
+                            <div class="col-md-9">
+                                <h5>Subject Students</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <h5><a asp-controller="marks" class="btn btn-success" asp-action="Create" asp-route-id="@subjectId">Add Marks</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Student Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.students != null && Model.students.Any())
+                                {
+                                    foreach (var sStudent in subjectStudents)
+                                    {
+                                        Student student = Model.students.FirstOrDefault(s => s.RegistrationId == sStudent.StudentId);
+                                        <tr>
+                                            <td>@student.Id</td>
+                                            <td>@student.Name</td>
+                                            <td>
+                                                <a asp-controller="subjects" class="btn btn-primary" asp-action="Details" asp-route-id="@teachersSubject.Id">Details</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3">No subjects available.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('search-student-input').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#students-table tbody tr');
+
+        rows.forEach(row => {
+            const studentId = row.querySelector('.student-id').textContent.toLowerCase();
+            const studentName = row.querySelector('.student-name').textContent.toLowerCase();
+
+            if (studentId.includes(query) || studentName.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>

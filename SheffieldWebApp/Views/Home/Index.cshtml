@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center py-5 bg-light">
+    <h1 class="display-4 fw-bold">Welcome to the Student Management System</h1>
+    <p class="lead text-muted">Your gateway to managing and tracking academic progress.</p>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Student Portal -->
+        <div class="col-md-6">
+            <div class="card border-primary shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title text-primary">Student Portal</h3>
+                    <p class="card-text">As a student, you can view your grades, assigned subjects, and track your academic performance.</p>
+                    @if (User.IsInRole("Student"))
+
+                    {
+                        <a class="btn btn-primary w-100" asp-area="" asp-controller="Students" asp-action="Index">Go to Student Portal</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Portal -->
+        <div class="col-md-6">
+            <div class="card border-success shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title text-success">Teacher Portal</h3>
+                    <p class="card-text">As a teacher, you can manage student grades, assign subjects, and add marks for your students.</p>
+                    @if (User.IsInRole("Teacher"))
+
+                    {
+                        <a class="btn btn-success w-100" asp-area="" asp-controller="TeachersDashboard" asp-action="Index">Go to Teacher Dashboard</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+
+    {
+        <div class="row g-4 mt-4">
+            <!-- Admin Dashboard -->
+            <div class="col-12">
+                <div class="card border-danger shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-danger">Admin Dashboard</h3>
+                        <p class="card-text">As an admin, you have full access to manage students, teachers, grades, and more.</p>
+                        <a class="btn btn-danger w-100" asp-area="" asp-controller="Admin" asp-action="Index">Go to Admin Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="container text-center mt-5">
+    @if (User.IsInRole("Student"))
+
+    {
+        <h2 class="text-primary">Hello, Student!</h2>
+        <a class="btn btn-outline-primary mt-3" asp-area="" asp-controller="Students" asp-action="Index">Go to Student Portal</a>
+    }
+
+    else if (User.IsInRole("Teacher"))
+
+    {
+        <h2 class="text-success">Hello, Teacher!</h2>
+        <a class="btn btn-outline-success mt-3" asp-area="" asp-controller="TeachersDashboard" asp-action="Index">Go to Teacher Dashboard</a>
+    }
+
+    else if (User.IsInRole("Admin"))
+
+    {
+        <h2 class="text-danger">Hello, Admin!</h2>
+        
+    }
+
+    else
+
+    {
+       
+    }
+</div>

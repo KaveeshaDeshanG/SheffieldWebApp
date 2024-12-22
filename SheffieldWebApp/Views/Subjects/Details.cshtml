@@ -1,0 +1,102 @@
+﻿@model SheffieldWebApp.Models.SubjectDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Grade> grades = Model.Grades;
+}
+
+<div class="mt-5 card shadow">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-9">
+                <h5 class="mt-2">Subject Details</h5>
+
+            </div>
+            @if(!User.IsInRole("Student")){
+                <div class="col-3">
+                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.Subject.Id">Edit Subject</a>
+
+                </div>
+            }
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Subject.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Subject.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Subject.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Subject.Description)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+@if (grades == null){
+    <p>No grades available</p>
+}else{
+    <div class="card shadow mt-4">
+        <div class="card-header">
+            <h5 class="mt-2">Subject Grades</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Given Marks</th>
+                        @if (!User.IsInRole("Student"))
+                        {
+                            <th scope="col">Manage</th>
+
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grade in grades)
+                    {
+                        <tr>
+                            <td>@grade.GradeName</td>
+                            <td>@grade.GivenMarks</td>
+                            @if (!User.IsInRole("Student"))
+                            {
+                                <td>
+                                    <a asp-controller="grades" class="btn btn-warning" asp-action="Edit" asp-route-id="@grade.Id">Edit</a>
+                                    <a asp-controller="grades" class="btn btn-primary" asp-action="Details" asp-route-id="@grade.Id">Details</a>
+                                    <a asp-controller="grades" class="btn btn-danger" asp-action="Delete" asp-route-id="@grade.Id">Delete</a>
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+
+<div class="mt-5">
+    
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-controller="TeachersDashboard" class="btn btn-secondary" asp-action="Index">Back to List</a>
+
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Admin" class="btn btn-secondary" asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-controller="Students" class="btn btn-secondary" asp-action="Details" asp-route-id="@ViewBag.UserId">Back to List</a>
+    }
+</div>

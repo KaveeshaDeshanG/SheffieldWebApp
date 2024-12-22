@@ -1,0 +1,120 @@
+﻿@page
+@model RegisterTacherModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Registration Form Section -->
+        <div class="col-md-6 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="text-center text-primary mb-4">Create a New Account</h2>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                        <!-- Validation Summary -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <!-- Full Name Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.FullName" class="form-control" autocomplete="username" placeholder="Full Name" required />
+                            <label asp-for="Input.FullName">Full Name</label>
+                            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Subject Selection Field -->
+                        <div class="form-floating mb-3">
+                            <select class="form-select" asp-for="Input.SelectedSubject" required>
+                                <option value="">Select a Subject</option>
+                                @if (Model.Input.AvailableSubjects != null)
+
+                                {
+
+                                    foreach (var item in Model.Input.AvailableSubjects)
+
+                                    {
+                                        <option value="@item.Title">@item.Title</option>
+                                    }
+
+                                }
+                            </select>
+                            <label asp-for="Input.SelectedSubject">Subject</label>
+                            <span asp-validation-for="Input.SelectedSubject" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="name@example.com" required />
+                            <label asp-for="Input.Email">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <!--Birth Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Birth" class="form-control" autocomplete="birth" placeholder="Birthday" required />
+                            <label asp-for="Input.Birth">Birthday</label>
+                            <span asp-validation-for="Input.Birth" class="text-danger"></span>
+                        </div>
+                        <!--Age Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Age" class="form-control" autocomplete="age" placeholder="Age" required />
+                            <label asp-for="Input.Age">Age</label>
+                            <span asp-validation-for="Input.Age" class="text-danger"></span>
+                        </div>
+                        <!--Gender Field -->
+                        <div class="form-floating mb-3">
+                            <select class="form-select" asp-for="Input.Gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                
+                            </select>
+                            <label asp-for="Input.Gender">Gender</label>
+                            <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                        </div>
+                        <!--Address Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Address" class="form-control" autocomplete="address" placeholder="Address" required />
+                            <label asp-for="Input.Age">Address</label>
+                            <span asp-validation-for="Input.Address" class="text-danger"></span>
+                        </div>
+                        <!--Qulification Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Qulification" class="form-control" autocomplete="qulification" placeholder="Qulification" required />
+                            <label asp-for="Input.Qulification">Qualification</label>
+                            <span asp-validation-for="Input.Qulification" class="text-danger"></span>
+                        </div>
+                        <!--Phone Field -->
+                        <div class="form-floating mb-3">
+                            <input type="tel" asp-for="Input.Phone" class="form-control" autocomplete="phone" placeholder="Phone" required />
+                            <label asp-for="Input.Phone">Phone</label>
+                            <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" type="password" autocomplete="new-password" placeholder="Password" required />
+                            <label asp-for="Input.Password">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirm Password Field -->
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" type="password" autocomplete="new-password" placeholder="Confirm Password" required />
+                            <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <!-- Register Button -->
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

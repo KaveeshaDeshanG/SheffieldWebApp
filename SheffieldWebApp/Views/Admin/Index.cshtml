@@ -1,0 +1,232 @@
+﻿@model SheffieldWebApp.Models.AdminModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student-tab-pane" type="button" role="tab" aria-controls="student-tab-pane" aria-selected="true">Manage Students</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#Teachers-tab-pane" type="button" role="tab" aria-controls="Teachers-tab-pane" aria-selected="false">Manage Teachers</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects-tab-pane" type="button" role="tab" aria-controls="subjects-tab-pane" aria-selected="false">Manage Subjects</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        
+
+        <div class="tab-pane fade show active" id="student-tab-pane" role="tabpanel" aria-labelledby="student-tab" tabindex="0">
+            <div class="mt-3">
+                <p>
+                    <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Register">Register New Student</a>
+                </p>
+            </div>
+            <div class="card mt-4 mb-4">
+                <div class="card-header">
+                    <h5>Students</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-outline mb-4">
+                        <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or student Id">
+                    </div>
+                    <table class="table table-striped" id="students-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.students != null && Model.students.Any())
+                            {
+                                @foreach (var student in Model.students)
+                                {
+                                    <tr>
+                                        <td class="student-id">@student.Id</td>
+                                        <td class="student-name">@student.Name</td>
+                                        <td>@student.Email</td>
+                                        <td>
+                                            <a asp-controller="Students" class="btn btn-primary" asp-action="Details" asp-route-id="@student.Id">View Profile</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">No students available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="Teachers-tab-pane" role="tabpanel" aria-labelledby="Teachers-tab" tabindex="0">
+            
+            <div class="mt-3">
+                <p>
+                    <a class="btn btn-success" asp-area="Identity" asp-page="/Account/RegisterTeacher">Register New Teacher</a>
+                </p>
+            </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Teachers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-outline mb-4">
+                        <input type="search" class="form-control" id="search-teachers-input" placeholder="Search teachers by name or subject">
+                    </div>
+                    <table class="table table-striped" id="teachers-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.teachers != null && Model.teachers.Any())
+                            {
+                                @foreach (var teacher in Model.teachers)
+                                {
+                                    <tr>
+                                        <td class="teacher-name">@teacher.Name</td>
+                                        <td class="teacher-subject">@teacher.subject</td>
+                                        <td>@teacher.Email</td>
+                                        <td>
+                                            <a asp-controller="teachers" class="btn btn-primary" asp-action="Details" asp-route-id="@teacher.Id">Details</a>
+                                            <a asp-controller="teachers" class="btn btn-warning" asp-action="Edit" asp-route-id="@teacher.Id">Edit</a>
+                                            <a asp-controller="teachers" class="btn btn-danger" asp-action="Delete" asp-route-id="@teacher.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">No teachers available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="subjects-tab-pane" role="tabpanel" aria-labelledby="subjects-tab" tabindex="0">
+            <div class="mt-3">
+                <p>
+                    <a class="btn btn-success" asp-controller="subjects" asp-action="Create">Create New</a>
+                </p>
+            </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Subjects</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-outline mb-4">
+                        <input type="search" class="form-control" id="search-subject-input" placeholder="Search subject by name">
+                    </div>
+                    <table class="table table-striped" id="subject-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">View</th>
+                                <th scope="col">Grades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.subjects != null && Model.subjects.Any())
+                            {
+                                @foreach (var subject in Model.subjects)
+                                {
+                                    <tr>
+                                        <td>@subject.Id</td>
+                                        <td class="subject-name">@subject.Title</td>
+                                        <td>
+                                            <a class="btn btn-primary" asp-controller="subjects" asp-action="Details" asp-route-id="@subject.Id">Details</a>
+                                            <a class="btn btn-warning" asp-controller="subjects" asp-action="Edit" asp-route-id="@subject.Id">Edit</a>
+                                            <a class="btn btn-danger" asp-controller="subjects" asp-action="Delete" asp-route-id="@subject.Id">Delete</a>
+                                        </td>
+                                        <td>Manage Grades</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No subjects available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('search-student-input').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#students-table tbody tr');
+
+        rows.forEach(row => {
+            const studentId = row.querySelector('.student-id').textContent.toLowerCase();
+            const studentName = row.querySelector('.student-name').textContent.toLowerCase();
+
+            if (studentId.includes(query) || studentName.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    document.getElementById('search-teachers-input').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#teachers-table tbody tr');
+
+        rows.forEach(row => {
+            const teacherSubject = row.querySelector('.teacher-subject').textContent.toLowerCase();
+            const teacherName = row.querySelector('.teacher-name').textContent.toLowerCase();
+
+            if (teacherSubject.includes(query) || teacherName.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    document.getElementById('search-subject-input').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#subject-table tbody tr');
+
+        rows.forEach(row => {
+            const subjectName = row.querySelector('.subject-name').textContent.toLowerCase();
+
+            if (subjectName.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>

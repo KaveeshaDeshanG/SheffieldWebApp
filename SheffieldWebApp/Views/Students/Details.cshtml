@@ -1,0 +1,98 @@
+﻿@model SheffieldWebApp.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+    List<Subject> subjects = ViewData["studentSubject"] as List<Subject> ?? [];
+    List<Mark> marks = ViewData["marks"] as List<Mark> ?? [];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(User.IsInRole("Student")){
+    <h1>Hello @Model.Name</h1>
+}
+
+<div class="card mt-4 shadow">
+    <div class="card-header"><h5>Profile Details</h5></div>
+    <div class="card-body">
+        <div>
+            <h4>Student</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    Student Id
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.DateOfBirth)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+            
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mt-4">
+    <div class="card-header"><h5>Assigned Subjects</h5></div>
+    <div class="card-body">
+        <table class="table table-hover">
+            @foreach (var subject in subjects){
+                <tr>
+                    <td class="col-10">@subject.Title</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="Subjects" asp-action="Details" asp-route-userId="@Model!.Id" asp-route-id="@Model?.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </table>
+           
+    </div>
+</div>
+
+
+<div class="card shadow mt-4">
+    <div class="card-header"><h5>Subject Marks</h5></div>
+    <div class="card-body">
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Marks</th>
+                    <th scope="col">Grade</th>
+                </tr>
+            </thead>
+            
+            @foreach (var mark in marks)
+            {
+                Subject subjectName = subjects.FirstOrDefault(s => s.Id == mark.SubjectId)!;
+                <tr>
+                    <td>@subjectName.Title</td>
+                    <td>@mark.MarksObtained</td>
+                    <td>@mark.GradeName</td>
+                </tr>
+            }
+            
+        </table>
+        
+    </div>
+</div>

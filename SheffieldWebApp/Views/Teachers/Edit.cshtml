@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model SheffieldWebApp.Models.Teacher
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Subject> allSubjects = ViewData["subjects"] as List<Subject> ?? [];
+}
+
+<div class="card shadow mt-4">
+    <div class="card-header"><h5>Teacher Details</h5></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label asp-for="Name" class="control-label"></label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="Email" value="@Model.Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Subject
+                        </div>
+                        <div class="col-9">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" asp-for="subject" aria-label="Default select example">
+                                        <option value=""> @Model.subject </option>
+                                        @if (allSubjects != null)
+                                        {
+                                            foreach (var item in allSubjects)
+                                            {
+                                                <option value="@item.Title">@item.Title</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="subject" class="text-danger"></span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="subject" value="@Model.subject" class="form-control" />
+                                    <span asp-validation-for="subject" class="text-danger"></span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="row align-content-center">
+                        <div class="form-group text-center">
+                            <input type="submit" value="Save" class="btn btn-primary col-5" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    @if (User.IsInRole("Teacher"))
+    {
+        <a class="btn btn-success" asp-action="Details" asp-route-id="@Model.Id">Back to List</a>
+    }
+    else
+    {
+        <a class="btn btn-success" asp-controller="Admin" asp-action="Index">Back to List</a>
+    }
+</div>
