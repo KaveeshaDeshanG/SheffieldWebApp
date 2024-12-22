@@ -38,7 +38,7 @@
                 @foreach (var student in assignedStudents)
                 {
                     Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
-                    Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == student.Id.ToString());
+                    Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == selectedStudent.Id.ToString());
 
                     if (studentMark != null)
                     {
@@ -46,7 +46,7 @@
                             <form asp-action="ChangeMarks" asp-controller="Marks">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <td>
-                                    @student.Id
+                                    @selectedStudent.Id
                                 <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
                                 <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
                                 <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
@@ -72,8 +72,8 @@
                             <form asp-action="Create" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <td>
-                                    @student.Id
-                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                    @selectedStudent.Id
+                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@selectedStudent.Id" />
                                 <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
                                 <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
                             </td>

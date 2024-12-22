@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SheffieldWebApp.Data;
 using SheffieldWebApp.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace SheffieldWebApp.Areas.Identity.Pages.Account
 {
@@ -127,6 +129,15 @@ namespace SheffieldWebApp.Areas.Identity.Pages.Account
                     else if (User.IsInRole("Student"))
                     {
                         int studentId = _context.Student.FirstOrDefault(s => s.Email == Input.Email).Id;
+                        int studentid = _context.Student.FirstOrDefault(s => s.Email == Input.Email).Id;
+
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, studentid.ToString())
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
                         return RedirectToAction("Details", "Students", new { id= studentId });
                     }
                     else if (User.IsInRole("Teacher"))
