@@ -46,7 +46,7 @@
         </div>
         <div>
             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-            
+
         </div>
     </div>
 </div>
@@ -64,35 +64,118 @@
                 </tr>
             }
         </table>
-           
+
     </div>
 </div>
 
 
-<div class="card shadow mt-4">
-    <div class="card-header"><h5>Subject Marks</h5></div>
-    <div class="card-body">
+<div class="mt-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="s1-tab" data-bs-toggle="tab" data-bs-target="#s1-tab-pane" type="button" role="tab" aria-controls="s1-tab-pane" aria-selected="true">semeseter 1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="s2-tab" data-bs-toggle="tab" data-bs-target="#s2-tab-pane" type="button" role="tab" aria-controls="s2-tab-pane" aria-selected="true">Semester 2</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="s3-tab" data-bs-toggle="tab" data-bs-target="#s3-tab-pane" type="button" role="tab" aria-controls="s3-tab-pane" aria-selected="true">Semester 3</button>
+        </li>
+    </ul>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Marks</th>
-                    <th scope="col">Grade</th>
-                </tr>
-            </thead>
-            
-            @foreach (var mark in marks)
-            {
-                Subject subjectName = subjects.FirstOrDefault(s => s.Id == mark.SubjectId)!;
-                <tr>
-                    <td>@subjectName.Title</td>
-                    <td>@mark.MarksObtained</td>
-                    <td>@mark.GradeName</td>
-                </tr>
-            }
-            
-        </table>
-        
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="s1-tab-pane" role="tabpanel" aria-labelledby="s1-tab" tabindex="0">
+            <div class="card shadow">
+                <div class="card-header"><h5>Subject Marks</h5></div>
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                            </tr>
+                        </thead>
+                        @{
+                            List<Mark> allMarks = marks;
+                            marks = marks.Where(m => m.SemesterId == 1).ToList();
+                        }
+                        @foreach (var mark in marks)
+                        {
+                            Subject subjectName = subjects.FirstOrDefault(s => s.Id == mark.SubjectId)!;
+                            <tr>
+                                <td>@subjectName.Title</td>
+                                <td>@mark.MarksObtained</td>
+                                <td>@mark.GradeName</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade show" id="s2-tab-pane" role="tabpanel" aria-labelledby="s2-tab" tabindex="0">
+            <div class="card shadow">
+                <div class="card-header"><h5>Subject Marks</h5></div>
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                            </tr>
+                        </thead>
+                        @{
+                            marks = allMarks;
+                            marks = marks.Where(m => m.SemesterId == 2).ToList();
+                        }
+                        @foreach (var mark in marks)
+                        {
+                            Subject subjectName = subjects.FirstOrDefault(s => s.Id == mark.SubjectId)!;
+                            <tr>
+                                <td>@subjectName.Title</td>
+                                <td>@mark.MarksObtained</td>
+                                <td>@mark.GradeName</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade show" id="s3-tab-pane" role="tabpanel" aria-labelledby="s3-tab" tabindex="0">
+            <div class="card shadow">
+                <div class="card-header"><h5>Subject Marks</h5></div>
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                            </tr>
+                        </thead>
+                        @{
+                            marks = allMarks;
+                            marks = marks.Where(m => m.SemesterId == 3).ToList();
+                        }
+                        @foreach (var mark in marks)
+                        {
+                            Subject subjectName = subjects.FirstOrDefault(s => s.Id == mark.SubjectId)!;
+                            <tr>
+                                <td>@subjectName.Title</td>
+                                <td>@mark.MarksObtained</td>
+                                <td>@mark.GradeName</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+

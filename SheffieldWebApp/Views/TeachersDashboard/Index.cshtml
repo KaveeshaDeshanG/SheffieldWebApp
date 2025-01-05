@@ -93,49 +93,162 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Search Students</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-outline mb-4">
-                        <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or registration ID">
+            <div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="s1-tab" data-bs-toggle="tab" data-bs-target="#s1-tab-pane" type="button" role="tab" aria-controls="s1-tab-pane" aria-selected="true">semeseter 1</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="s2-tab" data-bs-toggle="tab" data-bs-target="#s2-tab-pane" type="button" role="tab" aria-controls="s2-tab-pane" aria-selected="true">Semester 2</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="s3-tab" data-bs-toggle="tab" data-bs-target="#s3-tab-pane" type="button" role="tab" aria-controls="s3-tab-pane" aria-selected="true">Semester 3</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="s1-tab-pane" role="tabpanel" aria-labelledby="s1-tab" tabindex="0">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Search Students</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-outline mb-4">
+                                    <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or registration ID">
+                                </div>
+                                <table class="table table-striped" id="students-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Marks</th>
+                                            <th scope="col">Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (subjectStudents != null && subjectStudents.Any())
+                                        {
+                                            @foreach (var student in subjectStudents)
+                                            {
+                                                Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId ==1)?.MarksObtained ?? 0;
+                                                <tr>
+                                                    <td class="student-id">@selectedStudent.Id</td>
+                                                    <td class="student-name">@selectedStudent.Name</td>
+                                                    <td>@marksObtained</td>
+                                                    <td>@gradeName</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="5">No students available.</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <table class="table table-striped" id="students-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Student Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Marks</th>
-                                <th scope="col">Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (subjectStudents != null && subjectStudents.Any())
-                            {
-                                @foreach (var student in subjectStudents)
-                                {
-                                    Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
-                                    string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
-                                    decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.MarksObtained ?? 0;
-                                    <tr>
-                                        <td class="student-id">@selectedStudent.Id</td>
-                                        <td class="student-name">@selectedStudent.Name</td>
-                                        <td>@marksObtained</td>
-                                        <td>@gradeName</td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="5">No students available.</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+
+                    <div class="tab-pane fade show" id="s2-tab-pane" role="tabpanel" aria-labelledby="s2-tab" tabindex="0">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Search Students</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-outline mb-4">
+                                    <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or registration ID">
+                                </div>
+                                <table class="table table-striped" id="students-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Marks</th>
+                                            <th scope="col">Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (subjectStudents != null && subjectStudents.Any())
+                                        {
+                                            @foreach (var student in subjectStudents)
+                                            {
+                                                Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 2)?.MarksObtained ?? 0;
+                                                <tr>
+                                                    <td class="student-id">@selectedStudent.Id</td>
+                                                    <td class="student-name">@selectedStudent.Name</td>
+                                                    <td>@marksObtained</td>
+                                                    <td>@gradeName</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="5">No students available.</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="s3-tab-pane" role="tabpanel" aria-labelledby="s3-tab" tabindex="0">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Search Students</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-outline mb-4">
+                                    <input type="search" class="form-control" id="search-student-input" placeholder="Search students by name or registration ID">
+                                </div>
+                                <table class="table table-striped" id="students-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Marks</th>
+                                            <th scope="col">Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (subjectStudents != null && subjectStudents.Any())
+                                        {
+                                            @foreach (var student in subjectStudents)
+                                            {
+                                                Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 3)?.MarksObtained ?? 0;
+                                                <tr>
+                                                    <td class="student-id">@selectedStudent.Id</td>
+                                                    <td class="student-name">@selectedStudent.Name</td>
+                                                    <td>@marksObtained</td>
+                                                    <td>@gradeName</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="5">No students available.</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+
+            
         </div>
        
         <div class="tab-pane fade" id="grade-tab-pane" role="tabpanel" aria-labelledby="grade-tab" tabindex="0">

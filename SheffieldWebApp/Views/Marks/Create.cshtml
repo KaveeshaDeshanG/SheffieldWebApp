@@ -10,95 +10,283 @@
     Subject subject = Model.Subject;
     List<SemesterModel> semesters = Model.semesters;
     List<AssignedStudent> assignedStudents = [];
-	foreach (var student in allAssignedStudents)
-	{
-		if (student.SubjectId == subject.Id)
-		{
-			assignedStudents.Add(student);
-		}
-	};
+    foreach (var student in allAssignedStudents)
+    {
+        if (student.SubjectId == subject.Id)
+        {
+            assignedStudents.Add(student);
+        }
+    };
 }
 
 <h1>Create</h1>
 <h4>Marks</h4>
 <hr />
 
-<div class="row">
-    <div class="col-md-8">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Student Id</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Marks</th>
-                    <th scope="col">Grade</th>
-                    <th scope="col">Semester</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var student in assignedStudents)
-                {
-                    Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
-                    Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == selectedStudent.Id.ToString());
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="s1-tab" data-bs-toggle="tab" data-bs-target="#s1-tab-pane" type="button" role="tab" aria-controls="s1-tab-pane" aria-selected="true">semeseter 1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="s2-tab" data-bs-toggle="tab" data-bs-target="#s2-tab-pane" type="button" role="tab" aria-controls="s2-tab-pane" aria-selected="true">Semester 2</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="s3-tab" data-bs-toggle="tab" data-bs-target="#s3-tab-pane" type="button" role="tab" aria-controls="s3-tab-pane" aria-selected="true">Semester 3</button>
+        </li>
+    </ul>
 
-                    if (studentMark != null)
-                    {
-                        <tr>
-                            <form asp-action="ChangeMarks" asp-controller="Marks">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <td>
-                                    @selectedStudent.Id
-                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
-                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
-                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
-                                <input type="hidden" asp-for="@Model.Marks.Id" value="@studentMark.Id" />
-                            </td>
-                            <td>@selectedStudent?.Name</td>
-                            <td>
-                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" value="@studentMark.MarksObtained" />
-                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
-                            </td>
-                            <td>@studentMark.GradeName</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="submit" value="Update" class="btn btn-primary" />
-                                </div>
-                            </td>
-                            </form>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <form asp-action="Create" method="post">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <td>
-                                    @selectedStudent.Id
-                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@selectedStudent.Id" />
-                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
-                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
-                            </td>
-                            <td>@selectedStudent?.Name</td>
-                            <td>
-                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" />
-                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
-                            </td>
-                            <td>-</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="submit" value="Add" class="btn btn-primary" />
-                                </div>
-                            </td>
-                            </form>
-                        </tr>
-                    }
-                }
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="s1-tab-pane" role="tabpanel" aria-labelledby="s1-tab" tabindex="0">
 
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Id</th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in assignedStudents)
+                            {
+                                Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
+                                Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == selectedStudent.Id.ToString() && m.SemesterId == 1);
+
+
+                                if (studentMark != null)
+                                {
+                                    <tr>
+                                        <form asp-action="ChangeMarks" asp-controller="Marks">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <td>
+                                                @selectedStudent.Id
+                                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                                <input type="hidden" asp-for="@Model.Marks.Id" value="@studentMark.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SemesterId" value="1" />
+                                            </td>
+                                            <td>@selectedStudent?.Name</td>
+                                            <td>
+                                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" value="@studentMark.MarksObtained" />
+                                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                            </td>
+                                            <td>@studentMark.GradeName</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                                </div>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <form asp-action="Create" method="post">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <td>
+                                                @selectedStudent.Id
+                                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@selectedStudent.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                                <input type="hidden" asp-for="@Model.Marks.SemesterId" value="1" />
+
+                                            </td>
+                                            <td>@selectedStudent?.Name</td>
+                                            <td>
+                                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" />
+                                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Add" class="btn btn-primary" />
+                                                </div>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="s2-tab-pane" role="tabpanel" aria-labelledby="s2-tab" tabindex="0">
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Id</th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in assignedStudents)
+                            {
+                                Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
+                                Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == selectedStudent.Id.ToString() && m.SemesterId == 2);
+
+
+                                if (studentMark != null)
+                                {
+                                    <tr>
+                                        <form asp-action="ChangeMarks" asp-controller="Marks">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <td>
+                                                @selectedStudent.Id
+                                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                                <input type="hidden" asp-for="@Model.Marks.Id" value="@studentMark.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SemesterId" value="2" />
+                                            </td>
+                                            <td>@selectedStudent?.Name</td>
+                                            <td>
+                                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" value="@studentMark.MarksObtained" />
+                                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                            </td>
+                                            <td>@studentMark.GradeName</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                                </div>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <form asp-action="Create" method="post">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <td>
+                                                @selectedStudent.Id
+                                                <input type="hidden" asp-for="@Model.Marks.StudentId" value="@selectedStudent.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                                <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                                <input type="hidden" asp-for="@Model.Marks.SemesterId" value="2" />
+
+                                            </td>
+                                            <td>@selectedStudent?.Name</td>
+                                            <td>
+                                                <input asp-for="@Model.Marks.MarksObtained" class="form-control" />
+                                                <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Add" class="btn btn-primary" />
+                                                </div>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="s3-tab-pane" role="tabpanel" aria-labelledby="s3-tab" tabindex="0">
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Id</th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Grade</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in assignedStudents)
+                            {
+                                Student selectedStudent = students.FirstOrDefault(s => s.RegistrationId == student.StudentId.ToString());
+                                Mark studentMark = allMarks.FirstOrDefault(m => m.StudentId == selectedStudent.Id.ToString() && m.SemesterId == 3);
+
+                                if (studentMark != null)
+                                {
+                                    <tr>
+                                        <form asp-action="ChangeMarks" asp-controller="Marks">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <td>
+                                                @selectedStudent.Id
+                                            <input type="hidden" asp-for="@Model.Marks.StudentId" value="@student.Id" />
+                                            <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                            <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                            <input type="hidden" asp-for="@Model.Marks.Id" value="@studentMark.Id" />
+                                            <input type="hidden" asp-for="@Model.Marks.SemesterId" value="3" />
+                                        </td>
+                                        <td>@selectedStudent?.Name</td>
+                                        <td>
+                                            <input asp-for="@Model.Marks.MarksObtained" class="form-control" value="@studentMark.MarksObtained" />
+                                            <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                        </td>
+                                        <td>@studentMark.GradeName</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="submit" value="Update" class="btn btn-primary" />
+                                            </div>
+                                        </td>
+                                        </form>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <form asp-action="Create" method="post">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <td>
+                                                @selectedStudent.Id
+                                            <input type="hidden" asp-for="@Model.Marks.StudentId" value="@selectedStudent.Id" />
+                                            <input type="hidden" asp-for="@Model.Marks.SubjectId" value="@subject.Id" />
+                                            <input type="hidden" asp-for="@Model.Marks.GradeName" value="pending" />
+                                            <input type="hidden" asp-for="@Model.Marks.SemesterId" value="3" />
+
+                                        </td>
+                                        <td>@selectedStudent?.Name</td>
+                                        <td>
+                                            <input asp-for="@Model.Marks.MarksObtained" class="form-control" />
+                                            <span asp-validation-for="@Model.Marks.MarksObtained" class="text-danger"></span>
+                                        </td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="submit" value="Add" class="btn btn-primary" />
+                                            </div>
+                                        </td>
+                                        </form>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
 
 @if (User.IsInRole("Teacher"))
 {

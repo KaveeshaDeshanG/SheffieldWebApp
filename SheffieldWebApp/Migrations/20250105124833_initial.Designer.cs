@@ -12,8 +12,8 @@ using SheffieldWebApp.Data;
 namespace SheffieldWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250103051006_migrations1")]
-    partial class migrations1
+    [Migration("20250105124833_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,7 +288,7 @@ namespace SheffieldWebApp.Migrations
                     b.Property<decimal>("MarksObtained")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SemesterName")
+                    b.Property<int>("SemesterId")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentId")
