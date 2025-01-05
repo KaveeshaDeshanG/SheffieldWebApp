@@ -95,7 +95,7 @@ namespace SheffieldWebApp.Controllers
                 }
                 if (User.IsInRole("Teacher"))
                 {
-                    return RedirectToAction("Index", "Teachers");
+                    return RedirectToAction("Index", "TeachersDashboard");
                 }
                 else
                 {

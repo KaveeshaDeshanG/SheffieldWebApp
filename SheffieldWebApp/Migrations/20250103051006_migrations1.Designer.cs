@@ -12,8 +12,8 @@ using SheffieldWebApp.Data;
 namespace SheffieldWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222165531_initial")]
-    partial class initial
+    [Migration("20250103051006_migrations1")]
+    partial class migrations1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,6 +288,9 @@ namespace SheffieldWebApp.Migrations
                     b.Property<decimal>("MarksObtained")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("SemesterName")
+                        .HasColumnType("int");
+
                     b.Property<string>("StudentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -298,6 +301,40 @@ namespace SheffieldWebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Mark");
+                });
+
+            modelBuilder.Entity("SheffieldWebApp.Models.SemesterModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("SemesterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Semesters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            SemesterName = "Semester 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            SemesterName = "Semester 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            SemesterName = "Semester 3"
+                        });
                 });
 
             modelBuilder.Entity("SheffieldWebApp.Models.Student", b =>

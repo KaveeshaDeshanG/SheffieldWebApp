@@ -17,6 +17,7 @@ namespace SheffieldWebApp.Data
         public DbSet<Student> Student { get; set; } = default!;
         public DbSet<Teacher> Teachers { get; set; } = default!;
         public DbSet<AssignedStudent> AssignedStudents { get; set; }
+        public DbSet<SemesterModel> Semesters { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +54,25 @@ namespace SheffieldWebApp.Data
                     Description = "Computer Science focuses on understanding and creating software and systems. It encompasses programming, data structures, algorithms, artificial intelligence, cybersecurity, and the development of computational solutions to real-world problems."
                 }
                 );
+
+            modelBuilder.Entity<SemesterModel>().HasData(
+               new SemesterModel
+               {
+                   Id = 1,
+                   SemesterName = "Semester 1",
+               },
+               new SemesterModel
+               {
+                   Id = 2,
+                   SemesterName = "Semester 2",
+               },
+               new SemesterModel
+               {
+                   Id = 3,
+                   SemesterName = "Semester 3",
+               }
+               );
         }
+       
     }
 }

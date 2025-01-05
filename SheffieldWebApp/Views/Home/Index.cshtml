@@ -70,14 +70,14 @@
 
     {
         <h2 class="text-primary">Hello, Student!</h2>
-        <a class="btn btn-outline-primary mt-3" asp-area="" asp-route-id="@studentId.Id" asp-controller="Students" asp-action="Index">Go to Student Portal</a>
+       
     }
 
     else if (User.IsInRole("Teacher"))
 
     {
         <h2 class="text-success">Hello, Teacher!</h2>
-        <a class="btn btn-outline-success mt-3" asp-area="" asp-controller="TeachersDashboard" asp-action="Index">Go to Teacher Dashboard</a>
+       
     }
 
     else if (User.IsInRole("Admin"))

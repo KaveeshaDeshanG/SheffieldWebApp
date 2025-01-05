@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SheffieldWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class migrations1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,11 +76,25 @@ namespace SheffieldWebApp.Migrations
                     StudentId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
                     MarksObtained = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GradeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GradeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SemesterName = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mark", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Semesters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SemesterName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Semesters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,6 +279,16 @@ namespace SheffieldWebApp.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Semesters",
+                columns: new[] { "Id", "SemesterName" },
+                values: new object[,]
+                {
+                    { 1, "Semester 1" },
+                    { 2, "Semester 2" },
+                    { 3, "Semester 3" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Subject",
                 columns: new[] { "Id", "Description", "Title" },
                 values: new object[,]
@@ -347,6 +371,9 @@ namespace SheffieldWebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mark");
+
+            migrationBuilder.DropTable(
+                name: "Semesters");
 
             migrationBuilder.DropTable(
                 name: "Student");

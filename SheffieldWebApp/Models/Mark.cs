@@ -14,6 +14,9 @@ namespace SheffieldWebApp.Models
         public decimal MarksObtained { get; set; }
         [Required]
         public string GradeName { get; set; }
+        [Required]
+        public int SemesterId { get; set; }
+
     }
 
 
@@ -25,5 +28,6 @@ namespace SheffieldWebApp.Models
         public List <Student> Students { get;  set; }
         public List <Mark> AllMarks { get;  set; }
         public Mark Marks { get; set; }
+        public List<SemesterModel> semesters { get; set; }
     }
 }

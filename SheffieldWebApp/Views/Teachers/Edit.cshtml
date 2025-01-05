@@ -31,6 +31,36 @@
                                 <input type="hidden" asp-for="Email" value="@Model.Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
+                            <!--Birth Field -->
+                            <div class="form-group">
+                                <input asp-for="Birthday" type="hidden" value="@Model.Birthday"  class="form-control" autocomplete="birth" placeholder="Birthday" required />
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+                            </div>
+                            <!--Age Field -->
+                            <div class="form-group">
+                                <input asp-for="Age" type="hidden" value="@Model.Age" class="form-control" autocomplete="age" placeholder="Age" required />
+                                <span asp-validation-for="Age" class="text-danger"></span>
+                            </div>
+                            <!--Gender Field -->
+                            <div class="form-group">
+                                <input asp-for="Gender" type="hidden" value="@Model.Gender" class="form-control" autocomplete="address" placeholder="Address" required />
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                            <!--Address Field -->
+                            <div class="form-group">
+                                <input asp-for="Address" type="hidden" value="@Model.Address" class="form-control" autocomplete="address" placeholder="Address" required />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <!--Qulification Field -->
+                            <div class="form-group">
+                                <input asp-for="Qulification" type="hidden" value="@Model.Qulification" class="form-control" autocomplete="qulification" placeholder="Qulification" required />
+                                <span asp-validation-for="Qulification" class="text-danger"></span>
+                            </div>
+                            <!--Phone Field -->
+                            <div class="form-group">
+                                <input type="hidden" value="@Model.Phone" asp-for="Phone" class="form-control" autocomplete="phone" placeholder="Phone" required />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
                         </div>
 
                     </div>

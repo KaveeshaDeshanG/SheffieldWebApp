@@ -8,7 +8,8 @@
     List<Student> students = Model.Students;
     List<Mark> allMarks = Model.AllMarks;
     Subject subject = Model.Subject;
-	List<AssignedStudent> assignedStudents = [];
+    List<SemesterModel> semesters = Model.semesters;
+    List<AssignedStudent> assignedStudents = [];
 	foreach (var student in allAssignedStudents)
 	{
 		if (student.SubjectId == subject.Id)
@@ -31,6 +32,7 @@
                     <th scope="col">Student Name</th>
                     <th scope="col">Marks</th>
                     <th scope="col">Grade</th>
+                    <th scope="col">Semester</th>
                     
                 </tr>
             </thead>
