@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SheffieldWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class migrations1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace SheffieldWebApp.Migrations
                     SubjectId = table.Column<int>(type: "int", nullable: false),
                     MarksObtained = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     GradeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SemesterName = table.Column<int>(type: "int", nullable: false)
+                    SemesterId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

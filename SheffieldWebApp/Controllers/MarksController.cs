@@ -99,7 +99,8 @@ namespace SheffieldWebApp.Controllers
                     StudentId = model.Marks.StudentId,
                     SubjectId = model.Marks.SubjectId,
                     MarksObtained = model.Marks.MarksObtained,
-                    GradeName = gradeName
+                    GradeName = gradeName,
+                    SemesterId = model.Marks.SemesterId
                 };
 
                 _context.Add(mark);
