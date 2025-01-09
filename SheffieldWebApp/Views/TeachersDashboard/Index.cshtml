@@ -131,7 +131,7 @@
                                             @foreach (var student in subjectStudents)
                                             {
                                                 Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
-                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 1)?.GradeName ?? "Pending";
                                                 decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId ==1)?.MarksObtained ?? 0;
                                                 <tr>
                                                     <td class="student-id">@selectedStudent.Id</td>
@@ -177,7 +177,7 @@
                                             @foreach (var student in subjectStudents)
                                             {
                                                 Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
-                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 2)?.GradeName ?? "Pending";
                                                 decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 2)?.MarksObtained ?? 0;
                                                 <tr>
                                                     <td class="student-id">@selectedStudent.Id</td>
@@ -223,7 +223,7 @@
                                             @foreach (var student in subjectStudents)
                                             {
                                                 Student selectedStudent = allStudents.FirstOrDefault(s => s.RegistrationId == student.StudentId)!;
-                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString())?.GradeName ?? "Pending";
+                                                string gradeName = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 3)?.GradeName ?? "Pending";
                                                 decimal marksObtained = allMarks.FirstOrDefault(s => s.StudentId == selectedStudent.Id.ToString() && s.SemesterId == 3)?.MarksObtained ?? 0;
                                                 <tr>
                                                     <td class="student-id">@selectedStudent.Id</td>
